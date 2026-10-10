@@ -1,0 +1,145 @@
+/* ============================================================
+   陳思朗 Sunny Chan — 個人網站
+   設計語言：紫曜 Violet Aurora
+   ============================================================ */
+:root{
+  --ink-950:#08060F; --ink-900:#0C0916; --ink-850:#12101F;
+  --surf-1:#171327;  --surf-2:#1F1A33;  --surf-3:#2A2342;
+  --violet-600:#7C3AED; --violet-500:#8B5CF6; --violet-400:#A78BFA;
+  --violet-300:#C4B5FD; --violet-200:#DDD6FE;
+  --aurora:linear-gradient(120deg,#7C3AED 0%,#A855F7 48%,#D946EF 100%);
+  --aurora-soft:linear-gradient(90deg,rgba(124,58,237,0),rgba(168,85,247,.55),rgba(217,70,239,0));
+  --tx-1:#F5F2FF; --tx-2:#B7ADD6; --tx-3:#7E7599;
+  --line:rgba(167,139,250,.16); --line-strong:rgba(167,139,250,.32);
+  --ok:#34D399;
+  --r-card:16px; --r-ctl:12px; --r-pill:999px;
+  --elev:0 1px 2px rgba(0,0,0,.55), 0 10px 28px -16px rgba(124,58,237,.55);
+  --dur:160ms; --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ink-900); color:var(--tx-1);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","PingFang TC","Helvetica Neue",Arial,sans-serif;
+  line-height:1.72; font-size:17px; letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:960px; margin:0 auto; padding:0 24px}
+a{color:var(--violet-300); text-decoration:none}
+a:hover{color:var(--violet-200)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky; top:0; z-index:20; background:rgba(12,9,22,.86); backdrop-filter:blur(14px)}
+.bar{display:flex; align-items:center; justify-content:space-between; gap:16px; height:64px}
+.brand{font-weight:650; font-size:16px; letter-spacing:.02em; display:flex; align-items:baseline; gap:8px}
+.brand-sub{font-size:12px; color:var(--tx-3); font-weight:500; letter-spacing:.06em; text-transform:uppercase}
+.nav{display:flex; gap:22px; font-size:14px}
+.nav a{color:var(--tx-2)}
+.nav a:hover{color:var(--tx-1)}
+.aurora-line{height:1px; background:var(--aurora-soft)}
+
+/* ---------- hero ---------- */
+.hero{padding:76px 24px 64px}
+.eyebrow{
+  font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--violet-300); margin:0 0 20px; font-weight:600;
+}
+.hero h1{
+  font-size:clamp(38px,7vw,60px); line-height:1.1; margin:0 0 24px;
+  font-weight:700; letter-spacing:-.02em;
+}
+.grad{
+  background:var(--aurora); -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent;
+}
+.lede{font-size:18px; color:var(--tx-2); max-width:620px; margin:0 0 32px}
+.cta{display:flex; gap:12px; flex-wrap:wrap}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-block; padding:11px 22px; border-radius:var(--r-pill);
+  font-size:15px; font-weight:600; transition:all var(--dur) var(--ease);
+  border:1px solid transparent;
+}
+.btn.primary{background:var(--aurora); color:#fff; box-shadow:var(--elev)}
+.btn.primary:hover{filter:brightness(1.1); color:#fff; transform:translateY(-1px)}
+.btn.ghost{border-color:var(--line-strong); color:var(--tx-1)}
+.btn.ghost:hover{background:var(--surf-2); border-color:var(--violet-400); color:var(--tx-1)}
+
+/* ---------- sections ---------- */
+.sec{padding:56px 24px; border-top:1px solid var(--line)}
+.sec h2{
+  font-size:13px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--violet-300); font-weight:600; margin:0 0 28px;
+}
+.sec > p{color:var(--tx-2); max-width:680px; margin:0 0 18px}
+.muted{color:var(--tx-3)!important; font-size:15px}
+
+/* ---------- cards ---------- */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin-top:32px}
+.card{
+  background:var(--surf-1); border:1px solid var(--line); border-radius:var(--r-card);
+  padding:22px 20px;
+}
+.card h3{margin:0 0 8px; font-size:16px; font-weight:650; color:var(--tx-1)}
+.card p{margin:0; font-size:14.5px; color:var(--tx-2); line-height:1.65}
+.dot{width:8px; height:8px; border-radius:50%; background:var(--violet-400); margin-bottom:14px}
+.dot.ok{background:var(--ok); box-shadow:0 0 0 4px rgba(52,211,153,.16)}
+
+/* ---------- jobs ---------- */
+.job{
+  background:var(--surf-1); border:1px solid var(--line); border-radius:var(--r-card);
+  padding:24px 22px; margin-bottom:14px;
+}
+.job-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+.job-head h3{margin:0; font-size:18px; font-weight:650}
+.job p{margin:0 0 14px; color:var(--tx-2); font-size:15.5px}
+.pill{
+  font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+  color:var(--violet-300); border:1px solid var(--line-strong);
+  border-radius:var(--r-pill); padding:3px 11px;
+}
+.ticks{margin:0; padding:0; list-style:none}
+.ticks li{position:relative; padding-left:20px; color:var(--tx-2); font-size:15px; margin-bottom:7px}
+.ticks li::before{content:""; position:absolute; left:0; top:.62em; width:6px; height:6px; border-radius:50%; background:var(--violet-400)}
+
+/* ---------- projects ---------- */
+.proj-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:6px}
+.proj{
+  background:var(--surf-1); border:1px solid var(--line); border-radius:var(--r-card);
+  padding:22px 20px; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.proj:hover{border-color:var(--line-strong); transform:translateY(-2px)}
+.proj h3{margin:0 0 8px; font-size:16.5px; font-weight:650}
+.proj p{margin:0 0 14px; font-size:14.5px; color:var(--tx-2); line-height:1.65}
+.tag{font-size:12px; color:var(--tx-3); letter-spacing:.04em}
+
+/* ---------- pets ---------- */
+.pets{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:28px}
+.pet{background:var(--surf-1); border:1px solid var(--line); border-radius:var(--r-card); padding:24px 20px}
+.pet-avatar{width:56px; height:56px; border-radius:50%; margin-bottom:16px; border:1px solid var(--line-strong)}
+.pet-avatar.a{background:var(--aurora)}
+.pet-avatar.b{background:linear-gradient(120deg,#4C1D95,#6D28D9 60%,#A78BFA)}
+.pet h3{margin:0 0 4px; font-size:19px; font-weight:650}
+.pet-role{margin:0 0 12px!important; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--violet-300); font-weight:600}
+.pet p{margin:0; color:var(--tx-2); font-size:15px}
+
+/* ---------- footer ---------- */
+.foot{
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding:36px 24px 48px; border-top:1px solid var(--line);
+  font-size:13.5px; color:var(--tx-3);
+}
+
+/* ---------- mobile ---------- */
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .nav{gap:14px; font-size:13px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .brand-sub{display:none}
+  .hero{padding:52px 18px 44px}
+  .sec{padding:44px 18px}
+  .cta .btn{flex:1 1 auto; text-align:center}
+}
