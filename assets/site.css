@@ -1,40 +1,61 @@
 /* ==========================================================================
    陳思朗 Sunny Chan — 個人網站
-   設計語言：技術製圖風（edge rulers / baseline ticks / 精確網格）
-   字體：PingFang HK + Helvetica Neue + 等寬標籤
+   結構：技術製圖風（edge rulers / baseline ticks / 精確網格）— 保留
+   色系：紫曜 Violet Aurora 官方 token（唔自行調色）
+   一屏一主角：極光漸變只用喺 hero 名字一次，其餘元素降到 tint→surface→ghost
    ========================================================================== */
 
 :root{
-  --bg:#0C0F13; --bg2:#11151A; --line:#262C34; --line2:#3A414B; --tick:#2C323A;
-  --grey:#8A9099; --mid:#C3C8CF; --white:#FFFFFF; --red:#C8102E;
+  /* ===== 紫曜 Violet Aurora 官方 token（tokens.css v1.0 2026-09-13）===== */
+  /* Ink — 紫墨底，唔用純黑 */
+  --ink-950:#08060F; --ink-900:#0C0916; --ink-850:#12101F;
+  --surf-1:#171327;  --surf-2:#1F1A33;  --surf-3:#2A2342;
+  /* Violet 主色階 */
+  --violet-700:#6D28D9; --violet-600:#7C3AED; --violet-500:#8B5CF6;
+  --violet-400:#A78BFA; --violet-300:#C4B5FD; --violet-200:#DDD6FE;
+  /* Aurora 簽名漸變 */
+  --aurora:linear-gradient(120deg,#7C3AED 0%,#A855F7 48%,#D946EF 100%);
+  --aurora-soft:linear-gradient(90deg,rgba(124,58,237,0),rgba(168,85,247,.55),rgba(217,70,239,0));
+  /* Text */
+  --tx-1:#F5F2FF; --tx-2:#B7ADD6; --tx-3:#7E7599;
+  /* Line 髮線 */
+  --line:rgba(167,139,250,.16); --line-strong:rgba(167,139,250,.32);
+  --elev:0 1px 2px rgba(0,0,0,.55), 0 10px 28px -16px rgba(124,58,237,.55);
+
+  /* ===== 本站別名 ===== */
+  --bg:var(--ink-900); --bg2:var(--surf-1);
 
   --cn:"PingFang SC","PingFang HK","Microsoft YaHei",sans-serif;
   --en:"Helvetica Neue","PingFang SC","PingFang HK",sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
 
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:32px; --s6:48px; --s7:64px; --s8:96px;
-  --r:2px; --ease:cubic-bezier(.2,0,0,1); --t:240ms;
+  --r:3px; --ease:cubic-bezier(.2,0,0,1); --t:240ms;
   --rule:14px; --pad:max(24px,calc(var(--rule) + 16px)); --maxw:1312px; --bar:64px;
+
+  /* 製圖刻度（紫調，唔用灰） */
+  --tick:rgba(167,139,250,.20);
+  --tick-major:rgba(167,139,250,.38);
 }
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--bg); color:var(--mid);
+  margin:0; background:var(--ink-900); color:var(--tx-2);
   font-family:var(--cn); font-size:16px; line-height:1.75;
   -webkit-font-smoothing:antialiased; letter-spacing:.01em;
 }
 a{color:inherit; text-decoration:none}
 img{display:block; max-width:100%}
-::selection{background:var(--red); color:#fff}
+::selection{background:var(--violet-600); color:#fff}
 
 /* ---------- 兩側固定刻度尺 ---------- */
 body::before,body::after{
   content:""; position:fixed; top:0; bottom:0; width:var(--rule);
   pointer-events:none; z-index:5;
   background:
-    repeating-linear-gradient(180deg,var(--line2) 0 1px,transparent 1px 64px) 0 0/var(--rule) 100% no-repeat,
-    repeating-linear-gradient(180deg,var(--tick)  0 1px,transparent 1px 8px)  0 0/50% 100% no-repeat;
+    repeating-linear-gradient(180deg,var(--tick-major) 0 1px,transparent 1px 64px) 0 0/var(--rule) 100% no-repeat,
+    repeating-linear-gradient(180deg,var(--tick)       0 1px,transparent 1px 8px)  0 0/50% 100% no-repeat;
 }
 body::before{left:0}
 body::after{right:0; transform:scaleX(-1)}
@@ -44,81 +65,97 @@ body::after{right:0; transform:scaleX(-1)}
 /* ---------- 頂欄 ---------- */
 .topbar{
   position:sticky; top:0; z-index:50;
-  background:rgba(12,15,19,.94);
-  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  background:rgba(12,9,22,.92);
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
+/* 極光髮線：華麗感來源（只做 1px 幼線，唔搶 hero 主角） */
+.topbar::after{content:""; display:block; height:1px; background:var(--aurora-soft)}
 .bar{display:flex; align-items:center; gap:var(--s5); height:var(--bar)}
 .brand{display:flex; align-items:center; gap:12px; flex:none}
 .mono{
   width:34px; height:34px; flex:none; display:grid; place-items:center;
-  border:1px solid var(--line2); border-radius:var(--r);
-  font-family:var(--mono); font-size:14px; font-weight:600; color:var(--white);
-  background-image:radial-gradient(120% 160% at 50% 0%,rgba(255,255,255,.06),rgba(255,255,255,0) 72%);
+  border:1px solid var(--line-strong); border-radius:var(--r);
+  font-family:var(--mono); font-size:14px; font-weight:600; color:var(--violet-200);
+  background:linear-gradient(160deg,rgba(124,58,237,.30),rgba(217,70,239,.08));
+  box-shadow:inset 0 1px 0 rgba(221,214,254,.16), 0 0 14px -6px rgba(168,85,247,.7);
 }
-.brand-t1{font-size:14px; font-weight:600; color:var(--white); letter-spacing:.06em; line-height:1.3}
-.brand-t2{font-family:var(--en); font-size:9.5px; letter-spacing:.18em; color:var(--grey); text-transform:uppercase}
-.navlinks{display:flex; gap:var(--s5); margin-left:auto; font-size:13.5px; color:var(--grey)}
+.brand-t1{font-size:14px; font-weight:600; color:var(--tx-1); letter-spacing:.06em; line-height:1.3}
+.brand-t2{font-family:var(--en); font-size:9.5px; letter-spacing:.18em; color:var(--tx-3); text-transform:uppercase}
+.navlinks{display:flex; gap:var(--s5); margin-left:auto; font-size:13.5px; color:var(--tx-3)}
 .navlinks a{padding:6px 0; transition:color var(--t) var(--ease); position:relative}
-.navlinks a:hover{color:var(--white)}
+.navlinks a:hover{color:var(--tx-1)}
 .navlinks a::after{
   content:""; position:absolute; left:0; right:100%; bottom:2px; height:1px;
-  background:var(--red); transition:right var(--t) var(--ease);
+  background:var(--aurora); transition:right var(--t) var(--ease);
 }
 .navlinks a:hover::after{right:0}
 
 .btn{
-  flex:none; padding:9px 18px; border:1px solid var(--line2); border-radius:var(--r);
-  font-size:13px; color:var(--white); letter-spacing:.04em; display:inline-block;
-  background-image:radial-gradient(130% 150% at 50% 0%,rgba(255,255,255,.065),rgba(255,255,255,0) 70%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 0 10px -3px rgba(255,255,255,.14);
+  flex:none; padding:9px 18px; border:1px solid var(--line-strong); border-radius:var(--r);
+  font-size:13px; color:var(--tx-1); letter-spacing:.04em; display:inline-block;
+  background-image:radial-gradient(130% 150% at 50% 0%,rgba(196,181,253,.12),rgba(196,181,253,0) 70%);
+  box-shadow:inset 0 1px 0 rgba(221,214,254,.10);
   transition:all var(--t) var(--ease); cursor:pointer;
 }
 .btn:hover{
-  border-color:var(--grey);
-  background-image:radial-gradient(130% 150% at 50% 0%,rgba(255,255,255,.11),rgba(255,255,255,0) 70%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 0 16px -2px rgba(255,255,255,.26);
+  border-color:var(--violet-400);
+  background-image:radial-gradient(130% 150% at 50% 0%,rgba(196,181,253,.22),rgba(196,181,253,0) 70%);
+  box-shadow:inset 0 1px 0 rgba(221,214,254,.18), 0 0 18px -4px rgba(139,92,246,.7);
 }
 .btn.solid{
-  background:var(--red); border-color:var(--red); background-image:none;
-  box-shadow:0 0 18px -6px rgba(200,16,46,.8);
+  background:var(--violet-600); border-color:var(--violet-500); background-image:none;
+  color:#fff; font-weight:600; box-shadow:0 0 20px -6px rgba(124,58,237,.95);
 }
-.btn.solid:hover{background:#E11234; border-color:#E11234; box-shadow:0 0 24px -6px rgba(200,16,46,.95)}
+.btn.solid:hover{background:var(--violet-500); border-color:var(--violet-400); box-shadow:0 0 28px -6px rgba(139,92,246,1)}
 
 /* ---------- kicker ---------- */
 .kicker{
   display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px;
   font-family:var(--en); font-size:11px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--white); font-weight:600;
+  text-transform:uppercase; color:var(--tx-1); font-weight:600;
 }
 .kicker::before{
-  content:""; width:6px; height:6px; border-radius:50%; background:var(--red); flex:none;
+  content:""; width:6px; height:6px; border-radius:50%; background:var(--violet-400); flex:none;
+  box-shadow:0 0 10px 1px rgba(167,139,250,.9);
   animation:led 2.4s steps(1) infinite;
 }
 @keyframes led{0%,58%{opacity:1}59%,100%{opacity:.22}}
-.kicker .en{color:var(--grey); font-weight:400}
+.kicker .en{color:var(--tx-3); font-weight:400}
 
 /* ---------- 標尺 ---------- */
 .rule{
-  margin:var(--s6) 0 0; height:16px; border-top:1px solid var(--line2);
+  margin:var(--s6) 0 0; height:16px; border-top:1px solid var(--line-strong);
   background:
-    repeating-linear-gradient(90deg,var(--line2) 0 1px,transparent 1px 64px) 0 0/100% 12px no-repeat,
-    repeating-linear-gradient(90deg,var(--tick)  0 1px,transparent 1px 8px)  0 0/100% 5px  no-repeat;
+    repeating-linear-gradient(90deg,var(--tick-major) 0 1px,transparent 1px 64px) 0 0/100% 12px no-repeat,
+    repeating-linear-gradient(90deg,var(--tick)       0 1px,transparent 1px 8px)  0 0/100% 5px  no-repeat;
 }
 
 /* ---------- hero ---------- */
-.hero{padding:var(--s8) 0 var(--s7)}
+.hero{padding:var(--s8) 0 var(--s7); position:relative}
+/* 極光暈：全站唯一「主角」光暈 */
+.hero::before{
+  content:""; position:absolute; left:50%; top:-140px; transform:translateX(-50%);
+  width:min(920px,110%); height:460px; pointer-events:none; z-index:0;
+  background:radial-gradient(60% 70% at 50% 40%,rgba(124,58,237,.30),rgba(124,58,237,0) 72%);
+  filter:blur(6px);
+}
+.hero>*{position:relative; z-index:1}
 .hero h1{
   margin:var(--s5) 0 0; font-size:clamp(40px,8.2vw,86px); line-height:1.06;
-  font-weight:600; color:var(--white); letter-spacing:-.015em;
+  font-weight:600; letter-spacing:-.015em;
+  /* 🔴 一屏一主角：極光漸變只用呢一次 */
+  background:var(--aurora); -webkit-background-clip:text; background-clip:text;
+  color:transparent; -webkit-text-fill-color:transparent;
 }
 .hero h1 .en{
   display:block; margin-top:var(--s3);
   font-family:var(--en); font-size:clamp(13px,1.5vw,17px); font-weight:400;
-  letter-spacing:.24em; text-transform:uppercase; color:var(--grey);
+  letter-spacing:.24em; text-transform:uppercase; color:var(--tx-3);
+  -webkit-text-fill-color:var(--tx-3);
 }
 .hero .lede{
-  margin:var(--s5) 0 0; max-width:60ch; font-size:17.5px; line-height:1.8; color:var(--mid);
+  margin:var(--s5) 0 0; max-width:60ch; font-size:17.5px; line-height:1.8; color:var(--tx-2);
 }
 .meta{
   display:flex; flex-wrap:wrap; gap:0 var(--s5); margin-top:var(--s6); padding-top:var(--s4);
@@ -127,34 +164,36 @@ body::after{right:0; transform:scaleX(-1)}
 .meta div{display:flex; gap:8px; align-items:baseline; padding:4px 0}
 .meta dt{
   font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--grey);
+  text-transform:uppercase; color:var(--tx-3);
 }
-.meta dd{margin:0; color:var(--white)}
+.meta dd{margin:0; color:var(--tx-1)}
 
 /* ---------- 區段 ---------- */
 .sec{padding:var(--s7) 0 0}
 .sec-head{display:flex; align-items:baseline; gap:var(--s4); flex-wrap:wrap}
 .sec-num{
-  font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--red); flex:none;
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--violet-400); flex:none;
 }
-.sec-title{margin:0; font-size:clamp(22px,3vw,30px); font-weight:600; color:var(--white); letter-spacing:-.01em}
+.sec-title{margin:0; font-size:clamp(22px,3vw,30px); font-weight:600; color:var(--tx-1); letter-spacing:-.01em}
 .sec-sub{
   font-family:var(--en); font-size:10.5px; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--grey); margin-left:auto;
+  text-transform:uppercase; color:var(--tx-3); margin-left:auto;
 }
 .sec-body{margin-top:var(--s5); max-width:74ch}
-.sec-body p{margin:0 0 var(--s3); color:var(--mid)}
+.sec-body p{margin:0 0 var(--s3); color:var(--tx-2)}
+.sec-body strong{color:var(--violet-200); font-weight:600}
 
 /* ---------- 能力卡 ---------- */
-.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:1px; margin-top:var(--s5); background:var(--line); border:1px solid var(--line)}
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(248px,1fr)); gap:1px;
+  margin-top:var(--s5); background:var(--line); border:1px solid var(--line)}
 .card{
-  background:var(--bg2); padding:var(--s4);
+  background:var(--surf-1); padding:var(--s4);
   transition:background var(--t) var(--ease);
 }
-.card:hover{background:#151A20}
-.card .n{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--red); margin-bottom:var(--s3)}
-.card h3{margin:0 0 var(--s2); font-size:16px; font-weight:600; color:var(--white)}
-.card p{margin:0; font-size:14px; color:var(--grey); line-height:1.7}
+.card:hover{background:var(--surf-2)}
+.card .n{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--violet-400); margin-bottom:var(--s3)}
+.card h3{margin:0 0 var(--s2); font-size:16px; font-weight:600; color:var(--tx-1)}
+.card p{margin:0; font-size:14px; color:var(--tx-3); line-height:1.7}
 
 /* ---------- 工作 ---------- */
 .jobs{margin-top:var(--s5); border-top:1px solid var(--line)}
@@ -162,104 +201,115 @@ body::after{right:0; transform:scaleX(-1)}
   display:grid; grid-template-columns:132px 1fr; gap:var(--s5);
   padding:var(--s4) 0; border-bottom:1px solid var(--line);
 }
-.job-when{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; color:var(--grey); padding-top:4px}
-.job h3{margin:0; font-size:17px; font-weight:600; color:var(--white)}
+.job-when{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; color:var(--tx-3); padding-top:4px}
+.job h3{margin:0; font-size:17px; font-weight:600; color:var(--tx-1)}
 .job .org{
-  font-size:12.5px; color:var(--grey); margin-top:2px;
+  font-size:12.5px; color:var(--tx-3); margin-top:2px;
   font-family:var(--en); letter-spacing:.06em;
 }
 .job .pill{
-  display:inline-block; margin-left:8px; padding:1px 8px; border:1px solid var(--line2);
-  border-radius:var(--r); font-size:10.5px; letter-spacing:.1em; color:var(--red);
+  display:inline-block; margin-left:8px; padding:1px 8px;
+  border:1px solid var(--line-strong); border-radius:var(--r);
+  font-size:10.5px; letter-spacing:.1em; color:var(--violet-300);
+  background:rgba(124,58,237,.14);
   font-family:var(--mono); text-transform:uppercase; vertical-align:2px;
 }
-.job p{margin:var(--s3) 0 0; font-size:14.5px; color:var(--mid)}
+.job p{margin:var(--s3) 0 0; font-size:14.5px; color:var(--tx-2)}
 .ticks{margin:var(--s3) 0 0; padding:0; list-style:none}
-.ticks li{position:relative; padding-left:18px; font-size:14px; color:var(--grey); margin-bottom:6px}
+.ticks li{position:relative; padding-left:18px; font-size:14px; color:var(--tx-3); margin-bottom:6px}
 .ticks li::before{
   content:""; position:absolute; left:0; top:.72em;
-  width:8px; height:1px; background:var(--red);
+  width:8px; height:1px; background:var(--violet-400);
 }
 
 /* ---------- 項目 ---------- */
-/* 6 個項目 → 用 340px 最小寬，桌面固定 3 欄（2 行填滿，唔會留空格）
+/* 6 個項目 → 340px 最小寬，桌面 3 欄（2 行填滿，唔會留空格）
    容器上限 1312px、內文 1252px → 3 欄；平板 2 欄；手機 1 欄。 */
-.projs{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1px; margin-top:var(--s5); background:var(--line); border:1px solid var(--line)}
+.projs{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1px;
+  margin-top:var(--s5); background:var(--line); border:1px solid var(--line)}
 .proj{
-  background:var(--bg2); padding:var(--s4);
+  background:var(--surf-1); padding:var(--s4);
   transition:background var(--t) var(--ease); position:relative; overflow:hidden;
 }
 .proj::before{
-  content:""; position:absolute; inset:0 auto 0 0; width:2px; background:var(--red);
+  content:""; position:absolute; inset:0 auto 0 0; width:2px; background:var(--aurora);
   transform:scaleY(0); transform-origin:top; transition:transform var(--t) var(--ease);
 }
-.proj:hover{background:#151A20}
+.proj:hover{background:var(--surf-2)}
 .proj:hover::before{transform:scaleY(1)}
-.proj .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--grey)}
-.proj h3{margin:var(--s2) 0 var(--s3); font-size:16.5px; font-weight:600; color:var(--white)}
-.proj p{margin:0; font-size:14px; color:var(--grey); line-height:1.7}
+.proj .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--tx-3)}
+.proj h3{margin:var(--s2) 0 var(--s3); font-size:16.5px; font-weight:600; color:var(--tx-1)}
+.proj p{margin:0; font-size:14px; color:var(--tx-3); line-height:1.7}
 .proj .tags{
   margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid var(--line);
-  font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:var(--grey);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:var(--tx-3);
 }
 
 /* ---------- 點心 · 牛奶妹 ---------- */
 .dogs{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:var(--s4); margin-top:var(--s5)}
 .dog{
-  background:var(--bg2); border:1px solid var(--line); overflow:hidden;
-  transition:border-color var(--t) var(--ease);
+  background:var(--surf-1); border:1px solid var(--line); overflow:hidden;
+  transition:border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
 }
-.dog:hover{border-color:var(--line2)}
-.dog-photo{position:relative; aspect-ratio:1/1; overflow:hidden; background:#0A0D10}
+.dog:hover{border-color:var(--line-strong); box-shadow:var(--elev)}
+.dog-photo{position:relative; aspect-ratio:1/1; overflow:hidden; background:var(--ink-950)}
 .dog-photo img{
   width:100%; height:100%; object-fit:cover;
-  transition:transform 600ms var(--ease); filter:saturate(.97)
+  transition:transform 600ms var(--ease); filter:saturate(.98)
 }
 .dog:hover .dog-photo img{transform:scale(1.03)}
+/* 底部漸變用紫墨底，令相片同版面融合 */
 .dog-photo::after{
   content:""; position:absolute; inset:auto 0 0 0; height:52%;
-  background:linear-gradient(180deg,rgba(12,15,19,0) 0%,rgba(12,15,19,.62) 58%,rgba(12,15,19,.95) 100%);
+  background:linear-gradient(180deg,rgba(12,9,22,0) 0%,rgba(12,9,22,.62) 58%,rgba(12,9,22,.95) 100%);
 }
 .dog-photo .idx{
   position:absolute; top:var(--s3); left:var(--s3); z-index:2;
   font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
-  color:var(--white); background:rgba(12,15,19,.72); border:1px solid var(--line2);
-  border-radius:var(--r); padding:3px 9px;
+  color:var(--violet-200); background:rgba(12,9,22,.72);
+  border:1px solid var(--line-strong); border-radius:var(--r); padding:3px 9px;
 }
 .dog-photo .name{
   position:absolute; left:var(--s4); bottom:var(--s3); z-index:2;
-  color:var(--white); font-size:27px; font-weight:600; letter-spacing:.02em; line-height:1.2;
+  color:#fff; font-size:27px; font-weight:600; letter-spacing:.02em; line-height:1.2;
 }
 .dog-photo .name small{
   display:block; margin-top:4px; font-family:var(--en); font-size:10px;
-  letter-spacing:.2em; text-transform:uppercase; color:var(--grey); font-weight:400;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--violet-300); font-weight:400;
 }
 .dog-meta{padding:var(--s4)}
 .dog-meta .role{
   font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--red); margin-bottom:var(--s2);
+  color:var(--violet-400); margin-bottom:var(--s2);
 }
-.dog-meta p{margin:0; font-size:14.5px; color:var(--grey); line-height:1.75}
+.dog-meta p{margin:0; font-size:14.5px; color:var(--tx-3); line-height:1.75}
 
 /* ---------- 聯絡 ---------- */
 .contact{
   margin-top:var(--s7); padding:var(--s6) var(--s5); border:1px solid var(--line);
-  background:var(--bg2); text-align:center;
+  background:var(--surf-1); text-align:center; position:relative; overflow:hidden;
 }
-.contact h2{margin:0 0 var(--s3); font-size:clamp(22px,3vw,28px); font-weight:600; color:var(--white)}
-.contact p{margin:0 auto var(--s5); max-width:46ch; color:var(--grey); font-size:15px}
+.contact::before{
+  content:""; position:absolute; left:50%; top:-90px; transform:translateX(-50%);
+  width:520px; height:220px; pointer-events:none;
+  background:radial-gradient(55% 70% at 50% 50%,rgba(168,85,247,.22),rgba(168,85,247,0) 72%);
+}
+.contact>*{position:relative; z-index:1}
+.contact h2{margin:0 0 var(--s3); font-size:clamp(22px,3vw,28px); font-weight:600; color:var(--tx-1)}
+.contact p{margin:0 auto var(--s5); max-width:46ch; color:var(--tx-3); font-size:15px}
 .contact .mail{
-  font-family:var(--mono); font-size:14px; letter-spacing:.04em; color:var(--white);
-  border-bottom:1px solid var(--line2); padding-bottom:2px; transition:border-color var(--t) var(--ease);
+  font-family:var(--mono); font-size:14px; letter-spacing:.04em; color:var(--violet-200);
+  border-bottom:1px solid var(--line-strong); padding-bottom:2px;
+  transition:all var(--t) var(--ease);
 }
-.contact .mail:hover{border-color:var(--red)}
+.contact .mail:hover{border-color:var(--violet-400); color:#fff}
 
 /* ---------- footer ---------- */
 .foot{
   margin-top:var(--s7); padding:var(--s5) 0 var(--s7); border-top:1px solid var(--line);
   display:flex; justify-content:space-between; gap:var(--s3); flex-wrap:wrap;
   font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--grey);
+  text-transform:uppercase; color:var(--tx-3);
 }
 
 /* ---------- 手機 ---------- */
@@ -273,6 +323,7 @@ body::after{right:0; transform:scaleX(-1)}
 @media (max-width:520px){
   body{font-size:15.5px}
   .hero{padding:var(--s6) 0 var(--s5)}
+  .hero::before{top:-90px; height:320px}
   .hero .lede{font-size:16px}
   .meta{gap:0 var(--s4); font-size:12.5px}
   .contact{padding:var(--s5) var(--s4)}
